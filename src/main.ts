@@ -53,8 +53,14 @@ function embedFonts(svg: string): string {
 function useLocalFonts(svg: string): string {
 
   // Note we have to use a function here because replaceAll() is broken.
-  svg = svg.replaceAll("font-family=\"Virgil, Segoe UI Emoji\"", () => "font-family=\"Virgil GS, Segoe UI Emoji\"");
-  svg = svg.replaceAll("font-family=\"Cascadia, Segoe UI Emoji\"", () => "font-family=\"Cascadia Code, Segoe UI Emoji\"");
+  svg = svg.replaceAll("font-family=\"(Virgil, )?Segoe UI Emoji\"", () => "font-family=\"'Virgil 3 YOFF'\"");
+  svg = svg.replaceAll("font-family=\"(Cascadia, )?Segoe UI Emoji\"", () => "font-family=\"'Cascadia Code'\"");
+  return svg;
+}
+
+// Fix the NaN for the Y coordinate
+function replaceNaN(svg: string): string {
+  svg = svg.replaceAll("NaN", "0");
   return svg;
 }
 
@@ -124,6 +130,8 @@ async function main() {
       console.log("Renaming fonts");
       output = useLocalFonts(output);
     }
+
+    output = replaceNaN(output);
 
     console.log(`Writing ${outputFilename}`);
     fs.writeFileSync(outputFilename, output, { encoding: "utf-8" });
