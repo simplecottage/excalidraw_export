@@ -53,6 +53,7 @@ function embedFonts(svg: string): string {
 function useLocalFonts(svg: string): string {
 
   // Note we have to use a function here because replaceAll() is broken.
+  // FIX Regex to make Virgil/Cascadia optionnal, in some export Segoe UI is the only font in the document.
   svg = svg.replaceAll("font-family=\"(Virgil, )?Segoe UI Emoji\"", () => "font-family=\"'Virgil 3 YOFF'\"");
   svg = svg.replaceAll("font-family=\"(Cascadia, )?Segoe UI Emoji\"", () => "font-family=\"'Cascadia Code'\"");
   return svg;
